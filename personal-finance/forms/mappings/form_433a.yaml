@@ -1,0 +1,380 @@
+# Form 433-A Field Mappings
+# Maps data paths to PDF form fields and coordinates for IRS Form 433-A
+
+form_info:
+  name: "Collection Information Statement for Wage Earners and Self-Employed Individuals"
+  form_number: "433-A"
+  revision_date: "Rev. 10-2022"
+  
+# Personal Information Section
+personal_info:
+  taxpayer_name:
+    field_name: "taxpayer_name"
+    coordinates: [72, 720]
+    data_path: "taxpayer.full_name"
+    required: true
+    
+  spouse_name:
+    field_name: "spouse_name" 
+    coordinates: [350, 720]
+    data_path: "spouse.full_name"
+    required: false
+    
+  ssn:
+    field_name: "taxpayer_ssn"
+    coordinates: [72, 695]
+    data_path: "taxpayer.ssn"
+    required: true
+    mask: "xxx-xx-xxxx"
+    
+  spouse_ssn:
+    field_name: "spouse_ssn"
+    coordinates: [350, 695]
+    data_path: "spouse.ssn"
+    required: false
+    mask: "xxx-xx-xxxx"
+    
+  address_line1:
+    field_name: "address_line1"
+    coordinates: [72, 670]
+    data_path: "address.line1"
+    required: true
+    
+  address_line2:
+    field_name: "address_line2"
+    coordinates: [72, 645]
+    data_path: "address.line2"
+    required: false
+    
+  city:
+    field_name: "city"
+    coordinates: [72, 620]
+    data_path: "address.city"
+    required: true
+    
+  state:
+    field_name: "state"
+    coordinates: [250, 620]
+    data_path: "address.state"
+    required: true
+    
+  zip_code:
+    field_name: "zip_code"
+    coordinates: [350, 620]
+    data_path: "address.zip"
+    required: true
+    
+  phone_home:
+    field_name: "phone_home"
+    coordinates: [72, 595]
+    data_path: "contact.phone_home"
+    required: false
+    format: "(xxx) xxx-xxxx"
+    
+  phone_work:
+    field_name: "phone_work"
+    coordinates: [250, 595]
+    data_path: "contact.phone_work"
+    required: false
+    format: "(xxx) xxx-xxxx"
+    
+  email:
+    field_name: "email"
+    coordinates: [72, 570]
+    data_path: "contact.email"
+    required: false
+
+# Employment Information
+employment:
+  employer_name:
+    field_name: "employer_name"
+    coordinates: [72, 520]
+    data_path: "employment.employer_name"
+    required: true
+    
+  employer_address:
+    field_name: "employer_address"
+    coordinates: [72, 495]
+    data_path: "employment.employer_address"
+    required: true
+    
+  occupation:
+    field_name: "occupation"
+    coordinates: [72, 470]
+    data_path: "employment.occupation"
+    required: true
+    
+  work_phone:
+    field_name: "work_phone"
+    coordinates: [250, 470]
+    data_path: "employment.work_phone"
+    required: false
+    format: "(xxx) xxx-xxxx"
+    
+  pay_frequency:
+    field_name: "pay_frequency"
+    coordinates: [72, 445]
+    data_path: "employment.pay_frequency"
+    required: true
+    options: ["Weekly", "Bi-weekly", "Semi-monthly", "Monthly"]
+
+# Income Information  
+income:
+  gross_monthly_wages:
+    field_name: "gross_monthly_wages"
+    coordinates: [400, 380]
+    data_path: "income.gross_monthly_wages"
+    required: true
+    format: "currency"
+    
+  net_monthly_wages:
+    field_name: "net_monthly_wages"
+    coordinates: [400, 355]
+    data_path: "income.net_monthly_wages"
+    required: true
+    format: "currency"
+    
+  other_income:
+    field_name: "other_income"
+    coordinates: [400, 330]
+    data_path: "income.other_monthly"
+    required: false
+    format: "currency"
+    
+  total_monthly_income:
+    field_name: "total_monthly_income"
+    coordinates: [400, 305]
+    data_path: "income.total_monthly"
+    required: true
+    format: "currency"
+    calculated: true
+    formula: "gross_monthly_wages + other_income"
+
+# Monthly Expenses
+expenses:
+  housing_rent_mortgage:
+    field_name: "housing_payment"
+    coordinates: [400, 250]
+    data_path: "expenses.housing.rent_mortgage"
+    required: true
+    format: "currency"
+    
+  utilities:
+    field_name: "utilities"
+    coordinates: [400, 225]
+    data_path: "expenses.housing.utilities"
+    required: true
+    format: "currency"
+    
+  food:
+    field_name: "food"
+    coordinates: [400, 200]
+    data_path: "expenses.food.total"
+    required: true
+    format: "currency"
+    
+  transportation:
+    field_name: "transportation"
+    coordinates: [400, 175]
+    data_path: "expenses.transportation.total"
+    required: true
+    format: "currency"
+    
+  insurance:
+    field_name: "insurance"
+    coordinates: [400, 150]
+    data_path: "expenses.insurance.total"
+    required: true
+    format: "currency"
+    
+  medical:
+    field_name: "medical"
+    coordinates: [400, 125]
+    data_path: "expenses.medical.total"
+    required: false
+    format: "currency"
+    
+  other_expenses:
+    field_name: "other_expenses"
+    coordinates: [400, 100]
+    data_path: "expenses.other.total"
+    required: false
+    format: "currency"
+    
+  total_monthly_expenses:
+    field_name: "total_monthly_expenses"
+    coordinates: [400, 75]
+    data_path: "expenses.total_monthly"
+    required: true
+    format: "currency"
+    calculated: true
+    formula: "sum(housing_payment, utilities, food, transportation, insurance, medical, other_expenses)"
+
+# Assets
+assets:
+  checking_accounts:
+    field_name: "checking_balance"
+    coordinates: [400, 20]
+    data_path: "assets.cash.checking_total"
+    required: true
+    format: "currency"
+    
+  savings_accounts:
+    field_name: "savings_balance"
+    coordinates: [400, -5]
+    data_path: "assets.cash.savings_total"
+    required: true
+    format: "currency"
+    
+  investments:
+    field_name: "investments"
+    coordinates: [400, -30]
+    data_path: "assets.investments.total"
+    required: false
+    format: "currency"
+    
+  real_estate:
+    field_name: "real_estate"
+    coordinates: [400, -55]
+    data_path: "assets.real_estate.total"
+    required: false
+    format: "currency"
+    
+  vehicles:
+    field_name: "vehicles"
+    coordinates: [400, -80]
+    data_path: "assets.vehicles.total"
+    required: false
+    format: "currency"
+
+# Liabilities  
+liabilities:
+  credit_cards:
+    field_name: "credit_card_debt"
+    coordinates: [400, -130]
+    data_path: "liabilities.credit_cards.total"
+    required: true
+    format: "currency"
+    
+  student_loans:
+    field_name: "student_loans"
+    coordinates: [400, -155]
+    data_path: "liabilities.student_loans.total"
+    required: false
+    format: "currency"
+    
+  auto_loans:
+    field_name: "auto_loans"
+    coordinates: [400, -180]
+    data_path: "liabilities.auto_loans.total"
+    required: false
+    format: "currency"
+    
+  mortgage:
+    field_name: "mortgage_balance"
+    coordinates: [400, -205]
+    data_path: "liabilities.mortgage.balance"
+    required: false
+    format: "currency"
+    
+  other_debts:
+    field_name: "other_debts"
+    coordinates: [400, -230]
+    data_path: "liabilities.other.total"
+    required: false
+    format: "currency"
+
+# Validation Rules
+validation:
+  required_fields:
+    - "taxpayer_name"
+    - "ssn"
+    - "address_line1"
+    - "city"
+    - "state"
+    - "zip_code"
+    - "employer_name"
+    - "gross_monthly_wages"
+    - "net_monthly_wages"
+    - "total_monthly_income"
+    - "housing_payment"
+    - "total_monthly_expenses"
+    - "checking_balance"
+    - "savings_balance"
+    
+  field_formats:
+    ssn:
+      pattern: "^\\d{3}-\\d{2}-\\d{4}$"
+      message: "SSN must be in format xxx-xx-xxxx"
+      
+    zip_code:
+      pattern: "^\\d{5}(-\\d{4})?$"
+      message: "ZIP code must be 5 or 9 digits"
+      
+    phone:
+      pattern: "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+      message: "Phone must be in format (xxx) xxx-xxxx"
+      
+    email:
+      pattern: "^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$"
+      message: "Invalid email format"
+      
+    currency:
+      pattern: "^\\$?\\d{1,3}(,\\d{3})*(\\.\\d{2})?$"
+      message: "Currency must be in format $x,xxx.xx"
+      
+  business_rules:
+    - rule: "net_monthly_wages <= gross_monthly_wages"
+      message: "Net wages cannot exceed gross wages"
+      
+    - rule: "total_monthly_income >= gross_monthly_wages"
+      message: "Total income must include wages"
+      
+    - rule: "total_monthly_expenses > 0"
+      message: "Must have some monthly expenses"
+      
+    - rule: "checking_balance >= 0"
+      message: "Checking balance cannot be negative"
+
+# Page Layout
+page_layout:
+  page_size: "letter"
+  orientation: "portrait"
+  margins:
+    top: 72
+    bottom: 72
+    left: 72
+    right: 72
+    
+  font:
+    name: "Helvetica"
+    size: 10
+    
+  sections:
+    - name: "header"
+      y_start: 750
+      height: 50
+      
+    - name: "personal_info"
+      y_start: 700
+      height: 150
+      
+    - name: "employment"
+      y_start: 550
+      height: 100
+      
+    - name: "income"
+      y_start: 450
+      height: 100
+      
+    - name: "expenses"
+      y_start: 350
+      height: 200
+      
+    - name: "assets"
+      y_start: 150
+      height: 100
+      
+    - name: "liabilities"
+      y_start: 50
+      height: 100

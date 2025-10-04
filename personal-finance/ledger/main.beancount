@@ -1,0 +1,104 @@
+; Personal Finance Ledger
+; Double-entry bookkeeping using Beancount syntax
+; This is the source of truth for all financial transactions
+
+;; Options and plugins
+option "title" "Personal Finance Ledger"
+option "operating_currency" "USD"
+
+plugin "beancount.plugins.auto_accounts"
+
+;; Account declarations
+1900-01-01 open Assets:Checking:MainBank         USD
+1900-01-01 open Assets:Savings:MainBank          USD
+1900-01-01 open Assets:Checking:CreditUnion     USD
+1900-01-01 open Assets:Cash:Wallet              USD
+1900-01-01 open Assets:Investments:Brokerage    USD
+1900-01-01 open Assets:Investments:Retirement   USD
+
+1900-01-01 open Liabilities:CreditCard:MainCard USD
+1900-01-01 open Liabilities:CreditCard:RewardsCard USD
+1900-01-01 open Liabilities:Loans:Auto          USD
+1900-01-01 open Liabilities:Loans:Mortgage      USD
+
+1900-01-01 open Income:Salary:Primary           USD
+1900-01-01 open Income:Salary:Secondary         USD
+1900-01-01 open Income:Freelance                USD
+1900-01-01 open Income:Investments:Dividends    USD
+1900-01-01 open Income:Investments:Interest     USD
+1900-01-01 open Income:Other                    USD
+
+1900-01-01 open Expenses:Housing:Rent           USD
+1900-01-01 open Expenses:Housing:Utilities      USD
+1900-01-01 open Expenses:Housing:Internet       USD
+1900-01-01 open Expenses:Housing:Insurance      USD
+1900-01-01 open Expenses:Housing:Maintenance    USD
+
+1900-01-01 open Expenses:Food:Groceries         USD
+1900-01-01 open Expenses:Food:Restaurants       USD
+1900-01-01 open Expenses:Food:Coffee            USD
+
+1900-01-01 open Expenses:Transportation:Gas     USD
+1900-01-01 open Expenses:Transportation:Public  USD
+1900-01-01 open Expenses:Transportation:Maintenance USD
+1900-01-01 open Expenses:Transportation:Insurance USD
+
+1900-01-01 open Expenses:Health:Medical         USD
+1900-01-01 open Expenses:Health:Dental          USD
+1900-01-01 open Expenses:Health:Pharmacy        USD
+1900-01-01 open Expenses:Health:Insurance       USD
+
+1900-01-01 open Expenses:Entertainment:Movies   USD
+1900-01-01 open Expenses:Entertainment:Streaming USD
+1900-01-01 open Expenses:Entertainment:Games    USD
+1900-01-01 open Expenses:Entertainment:Books    USD
+
+1900-01-01 open Expenses:Shopping:Clothing      USD
+1900-01-01 open Expenses:Shopping:Electronics   USD
+1900-01-01 open Expenses:Shopping:Home          USD
+1900-01-01 open Expenses:Shopping:Personal      USD
+
+1900-01-01 open Expenses:Financial:Fees         USD
+1900-01-01 open Expenses:Financial:Interest     USD
+1900-01-01 open Expenses:Financial:Taxes        USD
+
+1900-01-01 open Expenses:Other:Miscellaneous    USD
+
+1900-01-01 open Equity:Opening-Balances        USD
+
+;; Sample transactions (replace with actual data)
+2024-01-01 * "Opening Balance" "Initial checking account balance"
+  Assets:Checking:MainBank              5000.00 USD
+  Equity:Opening-Balances              -5000.00 USD
+
+2024-01-01 * "Opening Balance" "Initial savings account balance"
+  Assets:Savings:MainBank               10000.00 USD
+  Equity:Opening-Balances              -10000.00 USD
+
+;; Example salary transaction
+2024-01-15 * "ACME Corp" "Salary deposit"
+  Assets:Checking:MainBank              3500.00 USD
+  Income:Salary:Primary                -3500.00 USD
+
+;; Example expense transactions
+2024-01-16 * "Grocery Store" "Weekly groceries"
+  Expenses:Food:Groceries                125.67 USD
+  Assets:Checking:MainBank              -125.67 USD
+
+2024-01-17 * "Gas Station" "Fuel"
+  Expenses:Transportation:Gas             45.00 USD
+  Liabilities:CreditCard:MainCard        -45.00 USD
+
+2024-01-18 * "Electric Company" "Monthly electric bill"
+  Expenses:Housing:Utilities             89.34 USD
+  Assets:Checking:MainBank               -89.34 USD
+
+;; Transfer between accounts
+2024-01-20 * "Transfer to savings"
+  Assets:Savings:MainBank               1000.00 USD
+  Assets:Checking:MainBank             -1000.00 USD
+
+;; Credit card payment
+2024-01-25 * "Credit card payment"
+  Liabilities:CreditCard:MainCard        500.00 USD
+  Assets:Checking:MainBank              -500.00 USD

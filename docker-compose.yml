@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  finance-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_PATH=/app/data/duck.db
+      - HERMES_URL=http://hermes:11434
+    volumes:
+      - finance_data:/app/data
+      - finance_logs:/app/logs
+      - ./personal-finance/.env:/app/.env:ro
+    depends_on:
+      - hermes
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  hermes:
+    image: ghcr.io/ggerganov/llama.cpp:server
+    ports:
+      - "11434:11434"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=11434
+    volumes:
+      - ./models:/models:ro
+    command: >
+      -m /models/hermes3-8b.Q4_K_M.gguf
+      --host 0.0.0.0
+      --port 11434
+      -c 4096
+      --keep -1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  finance_data:
+  finance_logs:

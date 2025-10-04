@@ -1,0 +1,223 @@
+# Import Rules Configuration
+# Maps CSV columns to Beancount postings and categories
+# Format: YAML configuration for different banks and CSV formats
+
+# Default settings
+default:
+  currency: "USD"
+  timezone: "America/New_York"
+  
+# Bank-specific import rules
+banks:
+  chase:
+    name: "Chase Bank"
+    csv_format:
+      date_column: "Transaction Date"
+      date_format: "%m/%d/%Y"
+      amount_column: "Amount"
+      description_column: "Description"
+      type_column: "Type"
+      account_column: null
+    
+    account_mapping:
+      checking: "Assets:Checking:Chase"
+      savings: "Assets:Savings:Chase"
+      credit: "Liabilities:CreditCard:Chase"
+    
+    transaction_type_rules:
+      - type: "DEBIT"
+        action: "expense"
+      - type: "CREDIT" 
+        action: "income"
+      - type: "ACH_DEBIT"
+        action: "expense"
+      - type: "ACH_CREDIT"
+        action: "income"
+      - type: "CHECK"
+        action: "expense"
+      - type: "DEPOSIT"
+        action: "income"
+    
+    category_rules:
+      # Merchant name patterns -> expense categories
+      - pattern: "(?i)(grocery|supermarket|food.*store|safeway|kroger|whole foods)"
+        category: "Expenses:Food:Groceries"
+      - pattern: "(?i)(restaurant|cafe|coffee|starbucks|mcdonald|pizza)"
+        category: "Expenses:Food:Restaurants"
+      - pattern: "(?i)(gas.*station|shell|exxon|chevron|bp|fuel)"
+        category: "Expenses:Transportation:Gas"
+      - pattern: "(?i)(electric|power|utility|water|sewer|garbage)"
+        category: "Expenses:Housing:Utilities"
+      - pattern: "(?i)(rent|mortgage|property.*mgmt)"
+        category: "Expenses:Housing:Rent"
+      - pattern: "(?i)(amazon|target|walmart|costco|shopping)"
+        category: "Expenses:Shopping:Miscellaneous"
+      - pattern: "(?i)(netflix|spotify|hulu|streaming|subscription)"
+        category: "Expenses:Entertainment:Streaming"
+      - pattern: "(?i)(medical|doctor|hospital|pharmacy|cvs|walgreens)"
+        category: "Expenses:Health:Medical"
+      - pattern: "(?i)(payroll|salary|wages|direct.*deposit)"
+        category: "Income:Salary:Primary"
+      - pattern: "(?i)(atm.*fee|bank.*fee|service.*charge)"
+        category: "Expenses:Financial:Fees"
+
+  bank_of_america:
+    name: "Bank of America"
+    csv_format:
+      date_column: "Date"
+      date_format: "%m/%d/%Y"
+      amount_column: "Amount"
+      description_column: "Description"
+      type_column: null
+      account_column: null
+    
+    account_mapping:
+      checking: "Assets:Checking:BankOfAmerica"
+      savings: "Assets:Savings:BankOfAmerica"
+      credit: "Liabilities:CreditCard:BankOfAmerica"
+    
+    # Amount sign indicates transaction type (negative = expense)
+    amount_sign_rules:
+      negative: "expense"
+      positive: "income"
+    
+    category_rules:
+      - pattern: "(?i)(grocery|supermarket|food.*store)"
+        category: "Expenses:Food:Groceries"
+      - pattern: "(?i)(restaurant|dining|cafe)"
+        category: "Expenses:Food:Restaurants"
+      - pattern: "(?i)(gas|fuel|station)"
+        category: "Expenses:Transportation:Gas"
+      - pattern: "(?i)(electric|utilities|water|internet)"
+        category: "Expenses:Housing:Utilities"
+      - pattern: "(?i)(deposit|payroll)"
+        category: "Income:Salary:Primary"
+
+  wells_fargo:
+    name: "Wells Fargo"
+    csv_format:
+      date_column: "Date"
+      date_format: "%m/%d/%Y"
+      amount_column: "Amount"
+      description_column: "Description"
+      type_column: null
+      account_column: null
+    
+    account_mapping:
+      checking: "Assets:Checking:WellsFargo"
+      savings: "Assets:Savings:WellsFargo"
+      credit: "Liabilities:CreditCard:WellsFargo"
+    
+    amount_sign_rules:
+      negative: "expense"
+      positive: "income"
+    
+    category_rules:
+      - pattern: "(?i)(grocery|food.*store|market)"
+        category: "Expenses:Food:Groceries"
+      - pattern: "(?i)(restaurant|fast.*food|dining)"
+        category: "Expenses:Food:Restaurants"
+      - pattern: "(?i)(gasoline|fuel)"
+        category: "Expenses:Transportation:Gas"
+      - pattern: "(?i)(electric|gas.*util|water|sewer)"
+        category: "Expenses:Housing:Utilities"
+      - pattern: "(?i)(salary|wages|payroll)"
+        category: "Income:Salary:Primary"
+
+  credit_union:
+    name: "Generic Credit Union"
+    csv_format:
+      date_column: "Date"
+      date_format: "%Y-%m-%d"
+      amount_column: "Amount"
+      description_column: "Description"
+      type_column: "Transaction Type"
+      account_column: "Account"
+    
+    account_mapping:
+      checking: "Assets:Checking:CreditUnion"
+      savings: "Assets:Savings:CreditUnion"
+      loan: "Liabilities:Loans:CreditUnion"
+    
+    transaction_type_rules:
+      - type: "Withdrawal"
+        action: "expense"
+      - type: "Deposit"
+        action: "income"
+      - type: "Transfer"
+        action: "transfer"
+      - type: "Fee"
+        action: "expense"
+        category: "Expenses:Financial:Fees"
+    
+    category_rules:
+      - pattern: "(?i)(grocery|food)"
+        category: "Expenses:Food:Groceries"
+      - pattern: "(?i)(restaurant|dining)"
+        category: "Expenses:Food:Restaurants"
+      - pattern: "(?i)(gas|fuel)"
+        category: "Expenses:Transportation:Gas"
+      - pattern: "(?i)(utility|electric|water)"
+        category: "Expenses:Housing:Utilities"
+      - pattern: "(?i)(payroll|direct.*dep)"
+        category: "Income:Salary:Primary"
+
+# Global category mapping rules (applied if bank-specific rules don't match)
+global_category_rules:
+  - pattern: "(?i)(irs|tax|h&r.*block|turbotax)"
+    category: "Expenses:Financial:Taxes"
+  - pattern: "(?i)(insurance|premium)"
+    category: "Expenses:Insurance:General"
+  - pattern: "(?i)(phone|cell|mobile|verizon|att|t-mobile)"
+    category: "Expenses:Phone"
+  - pattern: "(?i)(internet|comcast|spectrum|cox)"
+    category: "Expenses:Housing:Internet"
+  - pattern: "(?i)(uber|lyft|taxi|rideshare)"
+    category: "Expenses:Transportation:Rideshare"
+  - pattern: "(?i)(parking|meter|garage)"
+    category: "Expenses:Transportation:Parking"
+  - pattern: "(?i)(gym|fitness|yoga|sports)"
+    category: "Expenses:Health:Fitness"
+  - pattern: "(?i)(dentist|dental)"
+    category: "Expenses:Health:Dental"
+  - pattern: "(?i)(book|kindle|audible)"
+    category: "Expenses:Entertainment:Books"
+  - pattern: "(?i)(movie|cinema|theater)"
+    category: "Expenses:Entertainment:Movies"
+  - pattern: "(?i)(clothing|apparel|fashion)"
+    category: "Expenses:Shopping:Clothing"
+  - pattern: "(?i)(home.*depot|lowes|hardware)"
+    category: "Expenses:Housing:Maintenance"
+  - pattern: "(?i)(donation|charity|nonprofit)"
+    category: "Expenses:Charity"
+  - pattern: "(?i)(gift|present)"
+    category: "Expenses:Gifts"
+
+# Default fallback categories
+fallback_categories:
+  expense: "Expenses:Other:Miscellaneous"
+  income: "Income:Other"
+  transfer: null  # Transfers don't need expense categories
+
+# Special handling rules
+special_rules:
+  # Skip these transaction types entirely
+  skip_patterns:
+    - "(?i)(pending|processing)"
+    - "(?i)(available.*balance)"
+  
+  # Mark these as transfers between accounts
+  transfer_patterns:
+    - "(?i)(transfer|xfer|online.*banking.*transfer)"
+    - "(?i)(account.*to.*account)"
+  
+  # Mark these as fee transactions
+  fee_patterns:
+    - "(?i)(fee|charge|penalty)"
+    - "(?i)(overdraft|nsf|returned.*item)"
+  
+  # Income indicators
+  income_patterns:
+    - "(?i)(deposit|credit|refund|dividend|interest)"
+    - "(?i)(payroll|salary|wages|bonus)"
+    - "(?i)(tax.*refund|irs.*refund)"
