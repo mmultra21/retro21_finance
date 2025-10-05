@@ -1,0 +1,112 @@
+INFO:     Started server process [684]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+🚀 Starting Personal Finance API on http://127.0.0.1:8000
+📝 Simplified server for testing without database dependencies
+
+✅ Frontend UI: http://127.0.0.1:8000/
+✅ API Documentation: http://127.0.0.1:8000/docs
+
+INFO:     127.0.0.1:61288 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61309 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61310 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61362 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61363 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61437 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61438 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61489 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61490 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61532 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61533 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61568 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61569 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61619 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61620 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61694 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61695 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61745 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61746 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61790 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61791 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61838 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61839 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:storage.duck:Connected to DuckDB at /Users/mmultra21/Documents/retro21_finance/data/finance.db
+INFO:__main__:Successfully ingested 4 transactions from onpoint
+INFO:     127.0.0.1:61847 - "POST /ingest/csv HTTP/1.1" 200 OK
+INFO:storage.duck:Connected to DuckDB at /Users/mmultra21/Documents/retro21_finance/data/finance.db
+INFO:storage.duck:DuckDB connection closed
+INFO:     127.0.0.1:61882 - "GET /transactions?search=Test&limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61911 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61912 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62007 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62008 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62055 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62056 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62103 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62104 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62135 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62136 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62166 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62166 - "GET /static/css/style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:62168 - "GET /static/js/app.js?t=1759625000 HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:62167 - "GET /static/js/manage.js?t=1759625000 HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:62168 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62167 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62166 - "GET /narrate/templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62168 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62169 - "GET /forms/available HTTP/1.1" 200 OK
+INFO:storage.duck:Connected to DuckDB at /Users/mmultra21/Documents/retro21_finance/data/finance.db
+INFO:storage.duck:DuckDB connection closed
+INFO:     127.0.0.1:62170 - "GET /documents HTTP/1.1" 200 OK
+INFO:storage.duck:Connected to DuckDB at /Users/mmultra21/Documents/retro21_finance/data/finance.db
+INFO:storage.duck:DuckDB connection closed
+INFO:     127.0.0.1:62170 - "GET /documents HTTP/1.1" 200 OK
+INFO:storage.duck:Connected to DuckDB at /Users/mmultra21/Documents/retro21_finance/data/finance.db
+INFO:storage.duck:DuckDB connection closed
+INFO:     127.0.0.1:62198 - "GET /transactions?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62268 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62269 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62299 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62300 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62367 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62368 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:storage.duck:Connected to DuckDB at /Users/mmultra21/Documents/retro21_finance/data/finance.db
+INFO:storage.duck:DuckDB connection closed
+WARNING:__main__:⚠️ ALL TRANSACTIONS DELETED - 4 transactions removed from database
+INFO:     127.0.0.1:62367 - "DELETE /transactions/clear-all HTTP/1.1" 200 OK
+INFO:storage.duck:Connected to DuckDB at /Users/mmultra21/Documents/retro21_finance/data/finance.db
+INFO:storage.duck:DuckDB connection closed
+INFO:     127.0.0.1:62367 - "GET /transactions?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62398 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62399 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62429 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62430 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62527 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62528 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62558 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62559 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62621 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62622 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:storage.duck:Connected to DuckDB at /Users/mmultra21/Documents/retro21_finance/data/finance.db
+INFO:__main__:Successfully ingested 7520 transactions from onpoint
+INFO:     127.0.0.1:62622 - "POST /ingest/csv HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62661 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62662 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62694 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62695 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:storage.duck:Connected to DuckDB at /Users/mmultra21/Documents/retro21_finance/data/finance.db
+INFO:storage.duck:DuckDB connection closed
+INFO:     127.0.0.1:62695 - "GET /transactions?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62790 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62791 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62821 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62822 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62884 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62885 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62919 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62920 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62950 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62951 - "GET /llm/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63051 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63052 - "GET /llm/health HTTP/1.1" 200 OK

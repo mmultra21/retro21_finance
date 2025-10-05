@@ -1,0 +1,89 @@
+TAX RETURN SUMMARY 2024
+======================
+
+Taxpayer: Jane Smith
+SSN: XXX-XX-1234
+Filing Status: Single
+Tax Year: 2024
+
+INCOME SUMMARY
+--------------
+W-2 Wages (Tech Corp):           $125,000
+Freelance Income (1099-NEC):      $18,500
+Investment Income:
+  - Dividends:                     $2,800
+  - Long-term Capital Gains:       $5,200
+Interest Income:                     $450
+Total Income:                    $152,950
+
+ADJUSTMENTS TO INCOME
+---------------------
+Traditional IRA Contribution:     $6,500
+Student Loan Interest:            $2,100
+Health Savings Account (HSA):     $4,150
+Total Adjustments:               $12,750
+
+Adjusted Gross Income (AGI):    $140,200
+
+DEDUCTIONS
+----------
+Standard Deduction:              $14,600
+
+ITEMIZED DEDUCTIONS (Not Claimed - Standard is Higher)
+- Mortgage Interest:              $12,400
+- Property Taxes:                  $8,900
+- State Income Taxes:              $6,200
+- Charitable Donations:            $3,200
+Total Itemized (if claimed):     $30,700
+
+Taxable Income:                 $125,600
+
+TAX CALCULATION
+---------------
+Federal Income Tax (based on 2024 brackets):
+  - 10% on first $11,600:         $1,160
+  - 12% on $35,550:               $4,266
+  - 22% on $56,950:              $12,529
+  - 24% on $21,500:               $5,160
+Total Tax Before Credits:        $23,115
+
+TAX CREDITS
+-----------
+Retirement Savings Credit:          $200
+Energy Efficiency Credit:           $500
+Total Credits:                      $700
+
+PAYMENTS AND WITHHOLDING
+-----------------------
+Federal Tax Withheld (W-2):      $21,800
+Estimated Tax Payments:           $3,500
+Total Payments:                  $25,300
+
+FINAL CALCULATION
+-----------------
+Total Tax:                       $22,415
+Total Payments:                  $25,300
+Refund Due:                       $2,885
+
+STATE TAX SUMMARY (California)
+------------------------------
+State Taxable Income:           $140,200
+State Tax:                        $7,240
+State Withholding:                $7,800
+State Refund Due:                   $560
+
+RETIREMENT CONTRIBUTIONS
+-----------------------
+401(k) Contributions:            $23,000
+Traditional IRA:                  $6,500
+HSA Contributions:                $4,150
+Total Retirement Savings:        $33,650
+
+NOTES
+-----
+- Consider maximizing IRA contributions for next year
+- Energy efficiency credits available for solar panel installation
+- Itemizing might be beneficial if mortgage interest + property taxes increase
+- Maintain records of all charitable donations with receipts
+- Track all business expenses for freelance work
+- Consider increasing HSA contributions to maximum allowed ($4,150 for 2024)

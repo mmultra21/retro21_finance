@@ -1,0 +1,28 @@
+Financial Summary for John Doe - 2024
+
+INCOME:
+- Salary: $75,000
+- Freelance work: $12,000
+- Investment dividends: $2,500
+Total Income: $89,500
+
+EXPENSES:
+- Housing: $24,000 (rent and utilities)
+- Food: $8,000
+- Transportation: $6,000
+- Healthcare: $3,500
+- Entertainment: $2,500
+Total Expenses: $44,000
+
+NET SAVINGS: $45,500
+Savings Rate: 50.8%
+
+INVESTMENTS:
+- 401k contribution: $19,500
+- Roth IRA contribution: $6,000
+- Taxable brokerage: $20,000
+
+TAX INFORMATION:
+- Federal income tax paid: $15,000
+- State income tax paid: $4,500
+- Total tax rate: 21.8%

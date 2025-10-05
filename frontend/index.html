@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Dashboard</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Personal Finance Dashboard</h1>
+            <div class="status-bar">
+                <span class="status" id="apiStatus">🔴 API Offline</span>
+                <span class="status" id="llmStatus">🔴 LLM Offline</span>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="overview">Overview</button>
+            <button class="tab-btn" data-tab="manage">Manage Data</button>
+            <button class="tab-btn" data-tab="narrative">AI Narratives</button>
+            <button class="tab-btn" data-tab="forms">Forms</button>
+            <button class="tab-btn" data-tab="import">Import Data</button>
+        </nav>
+
+        <!-- Overview Tab -->
+        <div class="tab-content active" id="overview">
+            <div class="card">
+                <h2>📊 Financial Overview</h2>
+                <p class="subtitle">Quick snapshot of your finances</p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Income</div>
+                        <div class="stat-value" id="totalIncome">$0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Expenses</div>
+                        <div class="stat-value" id="totalExpenses">$0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Net Savings</div>
+                        <div class="stat-value" id="netSavings">$0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Savings Rate</div>
+                        <div class="stat-value" id="savingsRate">0%</div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="loadOverview()">Refresh Data</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manage Data Tab -->
+        <div class="tab-content" id="manage">
+            <div class="card">
+                <h2>📊 Manage Transactions</h2>
+                <p class="subtitle">View, search, edit, and delete your financial data</p>
+
+                <div class="toolbar">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Search by merchant, category, or description..." style="max-width: 400px;">
+                    <button class="btn btn-primary" onclick="loadTransactions()">🔄 Refresh</button>
+                    <button class="btn btn-secondary" onclick="exportTransactions()">📥 Export CSV</button>
+                    <button id="bulkEditBtn" class="btn btn-warning" onclick="bulkEditTransactions()" style="display: none;">✏️ Bulk Edit</button>
+                    <button id="bulkDeleteBtn" class="btn btn-danger" onclick="bulkDeleteTransactions()" style="display: none;">🗑️ Bulk Delete</button>
+                    <button class="btn btn-danger" onclick="clearAllTransactions()" style="margin-left: auto;">⚠️ Clear All Transactions</button>
+                </div>
+
+                <div id="transactionsTable" class="table-container">
+                    <div class="loading">Loading transactions...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Narratives Tab -->
+        <div class="tab-content" id="narrative">
+            <!-- AI Chat Section -->
+            <div class="card">
+                <h2>💬 AI Financial Advisor Chat</h2>
+                <p class="subtitle">Ask me anything about finances, budgeting, taxes, debt, or financial strategy</p>
+
+                <div class="chat-container" id="chatContainer">
+                    <div class="chat-welcome">
+                        <p>👋 Hello! I'm your AI financial advisor. Ask me questions about:</p>
+                        <ul>
+                            <li>📊 Budget planning and management</li>
+                            <li>💰 Debt reduction strategies</li>
+                            <li>📈 Investment and savings advice</li>
+                            <li>🧾 Tax planning and deductions</li>
+                            <li>💳 Credit and financial health</li>
+                            <li>🎯 Financial goal setting</li>
+                        </ul>
+                        <p><strong>Example questions:</strong></p>
+                        <ul class="example-questions">
+                            <li onclick="askQuestion('How should I prioritize paying off credit card debt vs student loans?')">
+                                "How should I prioritize paying off credit card debt vs student loans?"
+                            </li>
+                            <li onclick="askQuestion('What percentage of my income should I save each month?')">
+                                "What percentage of my income should I save each month?"
+                            </li>
+                            <li onclick="askQuestion('What tax deductions am I likely missing?')">
+                                "What tax deductions am I likely missing?"
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="chatMessages"></div>
+                </div>
+
+                <div class="chat-input-container">
+                    <textarea id="chatInput" class="form-control chat-textarea"
+                              placeholder="Ask a financial question... (e.g., 'How can I reduce my monthly expenses?')"
+                              rows="3"></textarea>
+                    <div class="chat-actions">
+                        <button class="btn btn-primary" onclick="sendChatMessage()">
+                            💬 Ask Question
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearChat()">
+                            🗑️ Clear Chat
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Q&A Section -->
+            <div class="card" style="margin-top: 20px;">
+                <h2>🤖 Document & Data Q&A</h2>
+                <p class="subtitle">Ask questions about your uploaded documents and transaction data with intelligent routing</p>
+
+                <!-- Vector Store Stats -->
+                <div class="stats-row" style="margin-bottom: 25px;">
+                    <div class="stat-badge">
+                        <span class="stat-icon">📚</span>
+                        <div class="stat-info">
+                            <div class="stat-value" id="vectorDocCount">0</div>
+                            <div class="stat-label">Documents in Vector Store</div>
+                        </div>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-icon">🔍</span>
+                        <div class="stat-info">
+                            <div class="stat-value" id="lastStrategy">None</div>
+                            <div class="stat-label">Last Query Strategy</div>
+                        </div>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-icon">✨</span>
+                        <div class="stat-info">
+                            <div class="stat-value" id="queryCount">0</div>
+                            <div class="stat-label">Queries Processed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box" style="margin-bottom: 15px;">
+                    <p><strong>🧠 Routing Strategies:</strong></p>
+                    <ul style="margin: 5px 0 0 20px; font-size: 0.9em;">
+                        <li><span style="color: #10b981;">🔄 HYBRID</span> - <strong>Combines DuckDB transactions + Qdrant documents</strong> (best for tax reporting!)</li>
+                        <li><span style="color: #4CAF50;">📄 VECTOR</span> - Searches your uploaded documents using semantic similarity</li>
+                        <li><span style="color: #2196F3;">🌐 WEB</span> - Searches the web via SerpAPI for current information (rates, prices, news)</li>
+                        <li><span style="color: #FF9800;">🤖 LLM</span> - Direct AI advice without specific data sources</li>
+                    </ul>
+                </div>
+
+                <div class="chat-container" id="docChatContainer">
+                    <div class="chat-welcome">
+                        <p><strong>💡 Example Use Cases:</strong></p>
+                        <ul class="example-questions">
+                            <li onclick="askDocQuestion('Based on my total income from transactions, how should I report this on Form 1040?')">
+                                <strong>🔄 HYBRID:</strong> "Based on my total income from transactions, how should I report this on Form 1040?"
+                            </li>
+                            <li onclick="askDocQuestion('What IRA contribution limits apply to my situation according to the uploaded tax documents?')">
+                                <strong>📄 VECTOR:</strong> "What IRA contribution limits apply to my situation according to the uploaded tax documents?"
+                            </li>
+                            <li onclick="askDocQuestion('What are the current mortgage rates today?')">
+                                <strong>🌐 WEB:</strong> "What are the current mortgage rates today?" <em>(triggers web search)</em>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="docChatMessages"></div>
+                </div>
+
+                <div class="chat-input-container">
+                    <textarea id="docChatInput" class="form-control chat-textarea"
+                              placeholder="Ask a question - it will automatically route to hybrid, vector search, web, or LLM..."
+                              rows="3"></textarea>
+                    <div class="chat-actions">
+                        <button class="btn btn-primary" onclick="sendDocQuestion()">
+                            💬 Ask Question
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearDocChat()">
+                            🗑️ Clear Chat
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template-Based Narratives Section -->
+            <div class="card" style="margin-top: 20px;">
+                <h2>📝 Template-Based Narratives</h2>
+                <p class="subtitle">Generate structured financial summaries using templates</p>
+
+                <div class="form-group">
+                    <label for="narrativeTemplate">Choose Template:</label>
+                    <select id="narrativeTemplate" class="form-control">
+                        <option value="">Loading templates...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Financial Data:</label>
+                    <div class="input-grid">
+                        <div>
+                            <label class="input-label">Total Income</label>
+                            <input type="text" id="narIncome" class="form-control" placeholder="$5,000">
+                        </div>
+                        <div>
+                            <label class="input-label">Total Expenses</label>
+                            <input type="text" id="narExpenses" class="form-control" placeholder="$3,200">
+                        </div>
+                        <div>
+                            <label class="input-label">Net Savings</label>
+                            <input type="text" id="narSavings" class="form-control" placeholder="$1,800">
+                        </div>
+                        <div>
+                            <label class="input-label">Top Category</label>
+                            <input type="text" id="narCategory" class="form-control" placeholder="Housing">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="generateNarrative()">
+                        ✨ Generate Narrative
+                    </button>
+                </div>
+
+                <div class="result-box" id="narrativeResult" style="display: none;">
+                    <h3>Generated Narrative:</h3>
+                    <p id="narrativeText"></p>
+                    <div class="meta" id="narrativeMeta"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Forms Tab -->
+        <div class="tab-content" id="forms">
+            <div class="card">
+                <h2>📄 Available Forms</h2>
+                <p class="subtitle">Tax forms and financial documents</p>
+
+                <div id="formsList" class="forms-list">
+                    <div class="loading">Loading forms...</div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-secondary" onclick="loadForms()">Refresh Forms</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Tab -->
+        <div class="tab-content" id="import">
+            <!-- CSV Import Section -->
+            <div class="card">
+                <h2>📊 Import Transaction Data (CSV)</h2>
+                <p class="subtitle">Upload CSV files from your bank for accounting accuracy</p>
+
+                <div class="info-box" style="margin-bottom: 15px;">
+                    <p><strong>📍 Use this for:</strong> Bank statements, credit card transactions, or any structured financial data that needs exact calculations and reporting.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="bankSelect">Select Bank:</label>
+                    <select id="bankSelect" class="form-control">
+                        <option value="chase">Chase</option>
+                        <option value="bofa">Bank of America</option>
+                        <option value="wells">Wells Fargo</option>
+                        <option value="citi">Citibank</option>
+                        <option value="onpoint">OnPoint Community Credit Union</option>
+                        <option value="unknown">Other/Unknown</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="csvFile">CSV File:</label>
+                    <input type="file" id="csvFile" class="form-control" accept=".csv">
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="importCSV()">
+                        📤 Upload & Import to DuckDB
+                    </button>
+                </div>
+
+                <div class="result-box" id="importResult" style="display: none;">
+                    <h3>Import Results:</h3>
+                    <p id="importText"></p>
+                </div>
+            </div>
+
+            <!-- Document Upload Section for RAG -->
+            <div class="card" style="margin-top: 20px;">
+                <h2>📄 Upload Documents for RAG (Qdrant)</h2>
+                <p class="subtitle">Upload tax forms, financial PDFs, and reference documents for AI Q&A</p>
+
+                <div class="info-box" style="margin-bottom: 15px;">
+                    <p><strong>📍 Use this for:</strong> Tax forms (1040, W-2, 1099), IRS instructions, financial guides, or any document you want to ask questions about using AI.</p>
+                    <p><strong>🎯 How it works:</strong> Documents are vectorized and stored in Qdrant for semantic search. Ask questions in the AI Narratives tab!</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="docCategory">Document Category:</label>
+                    <select id="docCategory" class="form-control" style="max-width: 300px;">
+                        <option value="tax">Tax Documents (1040, W-2, etc.)</option>
+                        <option value="bank">Bank Statements</option>
+                        <option value="investment">Investment Reports</option>
+                        <option value="ira">IRA/Retirement Documents</option>
+                        <option value="receipt">Receipts</option>
+                        <option value="general">General Financial</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="docFile">Select File (PDF, Image, or Text):</label>
+                    <input type="file" id="docFile" class="form-control" accept=".pdf,.png,.jpg,.jpeg,.txt">
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="uploadDocument()">
+                        📤 Upload & Vectorize to Qdrant
+                    </button>
+                </div>
+
+                <div id="uploadStatus" class="status-message" style="display: none;"></div>
+
+                <!-- Document List Section -->
+                <hr style="margin: 30px 0; border-color: rgba(255,255,255,0.1);">
+
+                <div class="documents-list-section">
+                    <h3>📚 Vector Store Contents</h3>
+                    <p class="subtitle">All documents indexed and available for semantic search</p>
+                    <div class="toolbar">
+                        <button class="btn btn-primary" onclick="loadDocuments()">🔄 Refresh</button>
+                        <button class="btn btn-secondary" onclick="exportDocumentList()">📥 Export List</button>
+                    </div>
+                    <div id="documentsTable" class="table-container">
+                        <div class="loading">Loading documents from vector store...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Personal Finance Dashboard | Powered by FastAPI & Hermes LLM</p>
+            <p><a href="/docs" target="_blank">API Documentation</a></p>
+        </footer>
+    </div>
+
+    <script src="static/js/app.js?t=1759625000"></script>
+    <script src="static/js/manage.js?t=1759625000"></script>
+    <script src="static/js/chat.js?t=1759625000"></script>
+    <script src="static/js/documents.js?t=1759625000"></script>
+</body>
+</html>

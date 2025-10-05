@@ -1,0 +1,9 @@
+WARNING:  You must pass the application as an import string to enable 'reload' or 'workers'.
+✅ Production mode: Serving frontend from /Users/mmultra21/Documents/retro21_finance/frontend/dist
+✅ Starting full Personal Finance API with all features
+
+🚀 Starting server on http://127.0.0.1:8000
+   Mode: Development
+   API Docs: http://127.0.0.1:8000/docs
+   LLM: http://127.0.0.1:11434
+

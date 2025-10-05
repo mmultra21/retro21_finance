@@ -54,8 +54,11 @@ class DuckDBManager:
             ).fetchone()
             
             if not result:
-                # Load and execute schema
-                schema_file = os.path.join(os.path.dirname(__file__), 'init_duckdb.sql')
+                # Load and execute schema - try fixed version first
+                schema_file = os.path.join(os.path.dirname(__file__), 'init_duckdb_fixed.sql')
+                if not os.path.exists(schema_file):
+                    schema_file = os.path.join(os.path.dirname(__file__), 'init_duckdb.sql')
+
                 if os.path.exists(schema_file):
                     with open(schema_file, 'r') as f:
                         schema_sql = f.read()

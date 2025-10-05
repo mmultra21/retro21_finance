@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Dashboard</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Personal Finance Dashboard</h1>
+            <div class="status-bar">
+                <span class="status" id="apiStatus">🔴 API Offline</span>
+                <span class="status" id="llmStatus">🔴 LLM Offline</span>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="overview">Overview</button>
+            <button class="tab-btn" data-tab="manage">Manage Data</button>
+            <button class="tab-btn" data-tab="narrative">AI Narratives</button>
+            <button class="tab-btn" data-tab="forms">Forms</button>
+            <button class="tab-btn" data-tab="import">Import Data</button>
+        </nav>
+
+        <!-- Overview Tab -->
+        <div class="tab-content active" id="overview">
+            <div class="card">
+                <h2>📊 Financial Overview</h2>
+                <p class="subtitle">Quick snapshot of your finances</p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Income</div>
+                        <div class="stat-value" id="totalIncome">$0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Expenses</div>
+                        <div class="stat-value" id="totalExpenses">$0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Net Savings</div>
+                        <div class="stat-value" id="netSavings">$0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Savings Rate</div>
+                        <div class="stat-value" id="savingsRate">0%</div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="loadOverview()">Refresh Data</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manage Data Tab -->
+        <div class="tab-content" id="manage">
+            <div class="card">
+                <h2>📊 Manage Transactions</h2>
+                <p class="subtitle">View, search, edit, and delete your financial data</p>
+
+                <div class="toolbar">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Search by merchant, category, or description..." style="max-width: 400px;">
+                    <button class="btn btn-primary" onclick="loadTransactions()">🔄 Refresh</button>
+                    <button class="btn btn-secondary" onclick="exportTransactions()">📥 Export CSV</button>
+                </div>
+
+                <div id="transactionsTable" class="table-container">
+                    <div class="loading">Loading transactions...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Narratives Tab -->
+        <div class="tab-content" id="narrative">
+            <!-- AI Chat Section -->
+            <div class="card">
+                <h2>💬 AI Financial Advisor Chat</h2>
+                <p class="subtitle">Ask me anything about finances, budgeting, taxes, debt, or financial strategy</p>
+
+                <div class="chat-container" id="chatContainer">
+                    <div class="chat-welcome">
+                        <p>👋 Hello! I'm your AI financial advisor. Ask me questions about:</p>
+                        <ul>
+                            <li>📊 Budget planning and management</li>
+                            <li>💰 Debt reduction strategies</li>
+                            <li>📈 Investment and savings advice</li>
+                            <li>🧾 Tax planning and deductions</li>
+                            <li>💳 Credit and financial health</li>
+                            <li>🎯 Financial goal setting</li>
+                        </ul>
+                        <p><strong>Example questions:</strong></p>
+                        <ul class="example-questions">
+                            <li onclick="askQuestion('How should I prioritize paying off credit card debt vs student loans?')">
+                                "How should I prioritize paying off credit card debt vs student loans?"
+                            </li>
+                            <li onclick="askQuestion('What percentage of my income should I save each month?')">
+                                "What percentage of my income should I save each month?"
+                            </li>
+                            <li onclick="askQuestion('What tax deductions am I likely missing?')">
+                                "What tax deductions am I likely missing?"
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="chatMessages"></div>
+                </div>
+
+                <div class="chat-input-container">
+                    <textarea id="chatInput" class="form-control chat-textarea"
+                              placeholder="Ask a financial question... (e.g., 'How can I reduce my monthly expenses?')"
+                              rows="3"></textarea>
+                    <div class="chat-actions">
+                        <button class="btn btn-primary" onclick="sendChatMessage()">
+                            💬 Ask Question
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearChat()">
+                            🗑️ Clear Chat
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template-Based Narratives Section -->
+            <div class="card" style="margin-top: 20px;">
+                <h2>📝 Template-Based Narratives</h2>
+                <p class="subtitle">Generate structured financial summaries using templates</p>
+
+                <div class="form-group">
+                    <label for="narrativeTemplate">Choose Template:</label>
+                    <select id="narrativeTemplate" class="form-control">
+                        <option value="">Loading templates...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Financial Data:</label>
+                    <div class="input-grid">
+                        <div>
+                            <label class="input-label">Total Income</label>
+                            <input type="text" id="narIncome" class="form-control" placeholder="$5,000">
+                        </div>
+                        <div>
+                            <label class="input-label">Total Expenses</label>
+                            <input type="text" id="narExpenses" class="form-control" placeholder="$3,200">
+                        </div>
+                        <div>
+                            <label class="input-label">Net Savings</label>
+                            <input type="text" id="narSavings" class="form-control" placeholder="$1,800">
+                        </div>
+                        <div>
+                            <label class="input-label">Top Category</label>
+                            <input type="text" id="narCategory" class="form-control" placeholder="Housing">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="generateNarrative()">
+                        ✨ Generate Narrative
+                    </button>
+                </div>
+
+                <div class="result-box" id="narrativeResult" style="display: none;">
+                    <h3>Generated Narrative:</h3>
+                    <p id="narrativeText"></p>
+                    <div class="meta" id="narrativeMeta"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forms Tab -->
+        <div class="tab-content" id="forms">
+            <div class="card">
+                <h2>📄 Available Forms</h2>
+                <p class="subtitle">Tax forms and financial documents</p>
+
+                <div id="formsList" class="forms-list">
+                    <div class="loading">Loading forms...</div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-secondary" onclick="loadForms()">Refresh Forms</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Tab -->
+        <div class="tab-content" id="import">
+            <div class="card">
+                <h2>📥 Import Transactions</h2>
+                <p class="subtitle">Upload CSV files from your bank</p>
+
+                <div class="form-group">
+                    <label for="bankSelect">Select Bank:</label>
+                    <select id="bankSelect" class="form-control">
+                        <option value="chase">Chase</option>
+                        <option value="bofa">Bank of America</option>
+                        <option value="wells">Wells Fargo</option>
+                        <option value="citi">Citibank</option>
+                        <option value="unknown">Other/Unknown</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="csvFile">CSV File:</label>
+                    <input type="file" id="csvFile" class="form-control" accept=".csv">
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="importCSV()">
+                        📤 Upload & Import
+                    </button>
+                </div>
+
+                <div class="result-box" id="importResult" style="display: none;">
+                    <h3>Import Results:</h3>
+                    <p id="importText"></p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Personal Finance Dashboard | Powered by FastAPI & Hermes LLM</p>
+            <p><a href="/docs" target="_blank">API Documentation</a></p>
+        </footer>
+    </div>
+
+    <script src="static/js/app.js"></script>
+    <script src="static/js/manage.js"></script>
+</body>
+</html>

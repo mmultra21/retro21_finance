@@ -1,0 +1,17 @@
+Personal Finance Test Document
+
+Income for 2023:
+- Salary: $65,000
+- Freelance: $15,000
+- Investment returns: $5,000
+Total Income: $85,000
+
+Expenses for 2023:
+- Rent: $24,000
+- Food: $8,000
+- Transportation: $6,000
+- Utilities: $3,600
+- Entertainment: $4,800
+Total Expenses: $46,400
+
+Net Savings: $38,600

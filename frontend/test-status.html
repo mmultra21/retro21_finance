@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LLM Status Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .status-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        .status {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .online { color: green; }
+        .offline { color: red; }
+        pre {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 LLM Status Test Page</h1>
+
+    <div class="status-box">
+        <h2>API Server Status</h2>
+        <div class="status" id="apiStatus">⏳ Checking...</div>
+        <pre id="apiResponse"></pre>
+    </div>
+
+    <div class="status-box">
+        <h2>LLM Server Status (via proxy)</h2>
+        <div class="status" id="llmStatus">⏳ Checking...</div>
+        <pre id="llmResponse"></pre>
+    </div>
+
+    <button onclick="checkAll()">🔄 Refresh Status</button>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:8000';
+
+        async function checkAPIStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+
+                document.getElementById('apiStatus').innerHTML =
+                    response.ok ? '🟢 API Online' : '🔴 API Offline';
+                document.getElementById('apiStatus').className =
+                    response.ok ? 'status online' : 'status offline';
+                document.getElementById('apiResponse').textContent =
+                    JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('apiStatus').innerHTML = '🔴 API Offline';
+                document.getElementById('apiStatus').className = 'status offline';
+                document.getElementById('apiResponse').textContent =
+                    'Error: ' + error.message;
+            }
+        }
+
+        async function checkLLMStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/llm/health`);
+                const data = await response.json();
+
+                const isOnline = response.ok && data.status === 'online';
+                document.getElementById('llmStatus').innerHTML =
+                    isOnline ? `🟢 LLM Online (${data.model})` : '🔴 LLM Offline';
+                document.getElementById('llmStatus').className =
+                    isOnline ? 'status online' : 'status offline';
+                document.getElementById('llmResponse').textContent =
+                    JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('llmStatus').innerHTML = '🔴 LLM Offline';
+                document.getElementById('llmStatus').className = 'status offline';
+                document.getElementById('llmResponse').textContent =
+                    'Error: ' + error.message;
+            }
+        }
+
+        function checkAll() {
+            checkAPIStatus();
+            checkLLMStatus();
+        }
+
+        // Check on load
+        checkAll();
+
+        // Auto-refresh every 5 seconds
+        setInterval(checkAll, 5000);
+    </script>
+</body>
+</html>
